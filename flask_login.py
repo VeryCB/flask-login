@@ -476,6 +476,12 @@ class LoginManager(object):
     def _set_cookie(self, response):
         # cookie settings
         config = current_app.config
+
+        disable_cookie = config.get('DISABLE_COOKIE', False)
+        if disable_cookie:
+            self._clear_cookie(response)
+            return
+
         cookie_name = config.get('REMEMBER_COOKIE_NAME', COOKIE_NAME)
         duration = config.get('REMEMBER_COOKIE_DURATION', COOKIE_DURATION)
         domain = config.get('REMEMBER_COOKIE_DOMAIN')
