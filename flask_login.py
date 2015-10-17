@@ -381,9 +381,10 @@ class LoginManager(object):
         if is_missing_user_id:
             cookie_name = config.get('REMEMBER_COOKIE_NAME', COOKIE_NAME)
             header_name = config.get('AUTH_HEADER_NAME', AUTH_HEADER_NAME)
+            disable_cookie = config.get('DISABLE_COOKIE', False)
             has_cookie = (cookie_name in request.cookies and
                           session.get('remember') != 'clear')
-            if has_cookie:
+            if has_cookie and not disable_cookie:
                 return self._load_from_cookie(request.cookies[cookie_name])
             elif self.request_callback:
                 return self._load_from_request(request)
